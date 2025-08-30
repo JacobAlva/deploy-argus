@@ -138,12 +138,12 @@ services:
     container_name: argus-agent
     restart: unless-stopped
     environment:
-      - AGENT_ID=\${AGENT_ID}
-      - AGENT_API_KEY=\${AGENT_API_KEY}
-      - ARGUS_BACKEND_URL=\${ARGUS_BACKEND_URL}
-      - AWS_DEFAULT_REGION=\${AWS_REGION}
-      - LOG_LEVEL=\${LOG_LEVEL}
-      - HEALTH_CHECK_INTERVAL=\${HEALTH_CHECK_INTERVAL}
+      - AGENT_ID=\${agent_id}
+      - AGENT_API_KEY=\${agent_api_key_secret_name}
+      - ARGUS_BACKEND_URL=\${argus_backend_url}
+      - AWS_DEFAULT_REGION=\${aws_region}
+      - LOG_LEVEL=\${agent_log_level}
+      - HEALTH_CHECK_INTERVAL=\${health_check_interval}
     volumes:
       - /var/log/argus-agent:/app/logs
       - /tmp:/tmp
