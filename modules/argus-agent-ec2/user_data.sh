@@ -4,15 +4,9 @@
 
 set -e
 
-# Variables from Terraform
-AGENT_API_KEY_SECRET_NAME="${agent_api_key_secret_name}"
-ARGUS_BACKEND_URL="${argus_backend_url}"
-AGENT_CONTAINER_IMAGE="${agent_container_image}"
-AGENT_LOG_LEVEL="${agent_log_level}"
-HEALTH_CHECK_INTERVAL="${health_check_interval}"
-#CLOUDWATCH_LOG_GROUP="${cloudwatch_log_group}"
-AWS_REGION="${aws_region}"
-AGENT_ID="${agent_id}"
+# All variables are used directly from Terraform template substitution
+# Available variables: agent_api_key_secret_name, argus_backend_url, agent_container_image,
+# agent_log_level, health_check_interval, cloudwatch_log_group, aws_region, agent_id
 
 # Log file for bootstrap process
 BOOTSTRAP_LOG="/var/log/argus-agent-bootstrap.log"
@@ -85,7 +79,7 @@ datetime_format = %Y-%m-%d %H:%M:%S
 EOF
 
 # Update awslogs region
-sed -i "s/us-east-1/${AWS_REGION}/g" /etc/awslogs/awscli.conf
+sed -i "s/us-east-1/${aws_region}/g" /etc/awslogs/awscli.conf
 
 # Start and enable awslogs
 systemctl start awslogs
@@ -97,8 +91,8 @@ mkdir -p /var/log/argus-agent
 # Retrieve API key from Secrets Manager
 log_message "Retrieving API key from Secrets Manager"
 API_KEY=$(aws secretsmanager get-secret-value \
-    --secret-id "$AGENT_API_KEY_SECRET_NAME" \
-    --region "$AWS_REGION" \
+    --secret-id "${agent_api_key_secret_name}" \
+    --region "${aws_region}" \
     --query SecretString --output text)
 
 if [ -z "$API_KEY" ]; then
@@ -110,12 +104,12 @@ fi
 log_message "Creating agent configuration"
 cat > /opt/argus-agent/.env << EOF
 # Argus Agent Configuration
-AGENT_ID=$AGENT_ID
+AGENT_ID=${agent_id}
 AGENT_API_KEY=$API_KEY
-ARGUS_BACKEND_URL=$ARGUS_BACKEND_URL
-AWS_DEFAULT_REGION=$AWS_REGION
-LOG_LEVEL=$AGENT_LOG_LEVEL
-HEALTH_CHECK_INTERVAL=$HEALTH_CHECK_INTERVAL
+ARGUS_BACKEND_URL=${argus_backend_url}
+AWS_DEFAULT_REGION=${aws_region}
+LOG_LEVEL=${agent_log_level}
+HEALTH_CHECK_INTERVAL=${health_check_interval}
 
 # Container configuration
 CONTAINER_NAME=argus-agent
@@ -134,7 +128,7 @@ version: '3.8'
 
 services:
   argus-agent:
-    image: ${AGENT_CONTAINER_IMAGE}
+    image: ${agent_container_image}
     container_name: argus-agent
     restart: unless-stopped
     environment:
