@@ -10,7 +10,7 @@ ARGUS_BACKEND_URL="${argus_backend_url}"
 AGENT_CONTAINER_IMAGE="${agent_container_image}"
 AGENT_LOG_LEVEL="${agent_log_level}"
 HEALTH_CHECK_INTERVAL="${health_check_interval}"
-CLOUDWATCH_LOG_GROUP="${cloudwatch_log_group}"
+#CLOUDWATCH_LOG_GROUP="${cloudwatch_log_group}"
 AWS_REGION="${aws_region}"
 AGENT_ID="${agent_id}"
 
@@ -67,19 +67,19 @@ state_file = /var/lib/awslogs/agent-state
 
 [/var/log/argus-agent-bootstrap.log]
 file = /var/log/argus-agent-bootstrap.log
-log_group_name = ${CLOUDWATCH_LOG_GROUP}
+log_group_name = ${cloudwatch_log_group}
 log_stream_name = {instance_id}/bootstrap
 datetime_format = %Y-%m-%d %H:%M:%S
 
 [/var/log/argus-agent/application.log]
 file = /var/log/argus-agent/application.log
-log_group_name = ${CLOUDWATCH_LOG_GROUP}
+log_group_name = ${cloudwatch_log_group}
 log_stream_name = {instance_id}/application
 datetime_format = %Y-%m-%d %H:%M:%S
 
 [/var/log/argus-agent/error.log]
 file = /var/log/argus-agent/error.log
-log_group_name = ${CLOUDWATCH_LOG_GROUP}
+log_group_name = ${cloudwatch_log_group}
 log_stream_name = {instance_id}/error
 datetime_format = %Y-%m-%d %H:%M:%S
 EOF

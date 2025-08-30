@@ -1,16 +1,6 @@
 # Argus Agent Basic Deployment Example
 # This example shows a simple, single-instance deployment
 
-terraform {
-  required_version = ">= 1.5"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
 # Configure AWS Provider
 provider "aws" {
   region = var.aws_region

@@ -221,7 +221,7 @@ aws ec2 describe-security-groups \
   --group-ids $(terraform output -raw security_group_id)
 
 # Test backend connectivity
-curl -v https://api.argus-dspm.com/health
+# curl -v https://api.argus-dspm.com/health
 ```
 
 #### 4. Container Issues
@@ -303,7 +303,6 @@ terraform apply
 ## Support
 
 ### Getting Help
-- **Documentation**: Check [agent_based_architecture.md](../docs/agent_based_architecture.md)
 - **Validation**: Run `./scripts/validate-deployment.sh`
 - **Logs**: Check CloudWatch logs for detailed error information
 

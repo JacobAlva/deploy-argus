@@ -44,7 +44,7 @@ variable "argus_backend_url" {
 variable "instance_type" {
   description = "EC2 instance type for the agent"
   type        = string
-  default     = "t3.medium"
+  default     = "t3.small"
   
   validation {
     condition = contains([
@@ -58,7 +58,7 @@ variable "instance_type" {
 variable "environment" {
   description = "Environment name (dev, staging, prod)"
   type        = string
-  default     = "prod"
+  default     = "dev"
   
   validation {
     condition     = contains(["dev", "staging", "prod"], var.environment)
