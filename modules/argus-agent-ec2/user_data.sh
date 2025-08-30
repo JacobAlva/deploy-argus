@@ -4,9 +4,15 @@
 
 set -e
 
-# All variables are used directly from Terraform template substitution
-# Available variables: agent_api_key_secret_name, argus_backend_url, agent_container_image,
-# agent_log_level, health_check_interval, cloudwatch_log_group, aws_region, agent_id
+# Template variables from Terraform (used in configuration files)
+# Bash variables for runtime use
+AGENT_ID="${agent_id}"
+AGENT_API_KEY_SECRET_NAME="${agent_api_key_secret_name}"
+ARGUS_BACKEND_URL="${argus_backend_url}"
+AGENT_CONTAINER_IMAGE="${agent_container_image}"
+AGENT_LOG_LEVEL="${agent_log_level}"
+HEALTH_CHECK_INTERVAL="${health_check_interval}"
+AWS_REGION="${aws_region}"
 
 # Log file for bootstrap process
 BOOTSTRAP_LOG="/var/log/argus-agent-bootstrap.log"
@@ -128,7 +134,7 @@ version: '3.8'
 
 services:
   argus-agent:
-    image: ${agent_container_image}
+    image: $AGENT_CONTAINER_IMAGE
     container_name: argus-agent
     restart: unless-stopped
     environment:
