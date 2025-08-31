@@ -1,6 +1,14 @@
 # Variables for Argus Agent Basic Deployment Example
 
 # Required Variables
+variable "argus_provider_account_id" {
+  description = "AWS Account ID of the Argus service provider (for cross-account trust)"
+  type        = string
+  validation {
+    condition     = can(regex("^[0-9]{12}$", var.argus_provider_account_id))
+    error_message = "Provider account ID must be a valid 12-digit AWS Account ID."
+  }
+}
 variable "customer_name" {
   description = "Customer name for resource naming and tagging"
   type        = string

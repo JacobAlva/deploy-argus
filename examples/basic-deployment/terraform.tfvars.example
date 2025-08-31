@@ -5,6 +5,9 @@
 # REQUIRED CONFIGURATION
 # ==============================================================================
 
+# Argus service provider AWS Account ID (provided by Argus)
+argus_provider_account_id = "123456789012"
+
 # Your company/organization name (alphanumeric and hyphens only)
 customer_name = "your-company-name"
 

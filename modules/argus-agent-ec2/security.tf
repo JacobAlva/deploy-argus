@@ -68,7 +68,7 @@ data "aws_vpc" "selected" {
 
 # IAM Role for Argus Agent
 resource "aws_iam_role" "argus_agent_role" {
-  name = "ArgusAgentRole-${var.customer_name}"
+  name = "ArgusAgentRole"
   
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -86,7 +86,7 @@ resource "aws_iam_role" "argus_agent_role" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+          AWS = "arn:aws:iam::${var.argus_provider_account_id}:root"
         }
         Condition = {
           StringEquals = {

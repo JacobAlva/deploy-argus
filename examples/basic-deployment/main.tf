@@ -14,6 +14,7 @@ module "argus_agent_ec2" {
   customer_name     = var.customer_name
   agent_api_key     = var.agent_api_key
   argus_backend_url = var.argus_backend_url
+  argus_provider_account_id = var.argus_provider_account_id
   
   # AWS Configuration
   aws_region = var.aws_region
