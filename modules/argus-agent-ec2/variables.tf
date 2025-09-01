@@ -103,7 +103,7 @@ variable "root_volume_size" {
 variable "agent_container_image" {
   description = "Docker container image for Argus agent"
   type        = string
-  default     = "argus-agent:latest"
+  default     = "000830353599.dkr.ecr.us-east-2.amazonaws.com/argus-agent:latest"
 }
 
 variable "agent_log_level" {

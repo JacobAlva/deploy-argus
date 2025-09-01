@@ -192,6 +192,40 @@ resource "aws_iam_policy" "argus_agent_logs_policy" {
   })
 }
 
+# IAM Policy for ECR access
+resource "aws_iam_policy" "argus_agent_ecr_policy" {
+  name        = "ArgusAgentECRPolicy-${var.customer_name}"
+  description = "ECR pull access for Argus agent container image"
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "ECRTokenAccess"
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
+        Resource = "*"
+      },
+      {
+        Sid    = "ECRPullAccess"
+        Effect = "Allow"
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+  
+  tags = merge(local.common_tags, {
+    Name = "argus-agent-ecr-policy-${var.customer_name}"
+  })
+}
+
 # IAM Policy for EC2 metadata and basic operations
 resource "aws_iam_policy" "argus_agent_ec2_policy" {
   name        = "ArgusAgentEC2Policy-${var.customer_name}"
@@ -237,6 +271,11 @@ resource "aws_iam_role_policy_attachment" "argus_agent_logs_attachment" {
 
 resource "aws_iam_role_policy_attachment" "argus_agent_ec2_attachment" {
   policy_arn = aws_iam_policy.argus_agent_ec2_policy.arn
+  role       = aws_iam_role.argus_agent_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "argus_agent_ecr_attachment" {
+  policy_arn = aws_iam_policy.argus_agent_ecr_policy.arn
   role       = aws_iam_role.argus_agent_role.name
 }
 

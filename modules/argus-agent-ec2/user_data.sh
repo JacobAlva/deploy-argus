@@ -226,9 +226,15 @@ cat > /etc/logrotate.d/argus-agent << EOF
 }
 EOF
 
-# Pull the latest agent container image
-log_message "Pulling Argus agent container image"
+# Login to ECR and pull agent container image
+log_message "Logging into ECR and pulling agent image"
 cd /opt/argus-agent
+
+# Extract ECR registry from image name
+ECR_REGISTRY=$(echo "${AGENT_CONTAINER_IMAGE}" | cut -d'/' -f1)
+aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${ECR_REGISTRY}"
+
+# Pull the agent image
 docker-compose pull
 
 # Enable and start the agent service
