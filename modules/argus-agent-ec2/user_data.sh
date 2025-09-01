@@ -88,8 +88,8 @@ EOF
 sed -i "s/us-east-1/${aws_region}/g" /etc/awslogs/awscli.conf
 
 # Start and enable awslogs
-systemctl start awslogs
-systemctl enable awslogs
+systemctl start awslogsd
+systemctl enable awslogsd
 
 # Create log directory for agent
 mkdir -p /var/log/argus-agent

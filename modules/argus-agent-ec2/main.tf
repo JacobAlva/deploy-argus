@@ -85,7 +85,10 @@ resource "random_id" "agent_suffix" {
 # Generate external ID for cross-account role assumption
 resource "random_password" "external_id" {
   length  = 32
-  special = true
+  special = false
+  upper = true
+  lower = true
+  numeric = true
 }
 
 # Create VPC if not provided

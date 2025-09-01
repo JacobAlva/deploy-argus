@@ -90,7 +90,7 @@ output "cloudwatch_log_group_arn" {
 # Agent Configuration
 output "agent_endpoint_url" {
   description = "Health check endpoint URL for the agent"
-  value       = var.agent_private_ip != "" ? "http://${aws_instance.argus_agent.private_ip}:8080/health" : null
+  value       = "http://${aws_instance.argus_agent.private_ip}:8000/health"
 }
 
 # Deployment Information
