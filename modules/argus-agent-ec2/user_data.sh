@@ -112,7 +112,9 @@ cat > /opt/argus-agent/.env << EOF
 # Argus Agent Configuration
 AGENT_ID=${agent_id}
 AGENT_API_KEY=$API_KEY
-ARGUS_BACKEND_URL=${argus_backend_url}
+SAAS_API_URL=${argus_backend_url}
+AWS_ROLE_ARN=arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):role/ArgusAgentRole
+AWS_EXTERNAL_ID=${external_id}
 AWS_DEFAULT_REGION=${aws_region}
 LOG_LEVEL=${agent_log_level}
 HEALTH_CHECK_INTERVAL=${health_check_interval}
@@ -134,16 +136,11 @@ version: '3.8'
 
 services:
   argus-agent:
-    image: $AGENT_CONTAINER_IMAGE
+    image: ${agent_container_image}
     container_name: argus-agent
     restart: unless-stopped
-    environment:
-      - AGENT_ID=\${agent_id}
-      - AGENT_API_KEY=\${agent_api_key_secret_name}
-      - ARGUS_BACKEND_URL=\${argus_backend_url}
-      - AWS_DEFAULT_REGION=\${aws_region}
-      - LOG_LEVEL=\${agent_log_level}
-      - HEALTH_CHECK_INTERVAL=\${health_check_interval}
+    env_file:
+      - .env
     volumes:
       - /var/log/argus-agent:/app/logs
       - /tmp:/tmp
@@ -230,9 +227,8 @@ EOF
 log_message "Logging into ECR and pulling agent image"
 cd /opt/argus-agent
 
-# Extract ECR registry from image name
-ECR_REGISTRY=$(echo "${AGENT_CONTAINER_IMAGE}" | cut -d'/' -f1)
-aws ecr get-login-password --region "${AWS_REGION}" | docker login --username AWS --password-stdin "${ECR_REGISTRY}"
+# Login to ECR using the registry from the container image
+aws ecr get-login-password --region "${aws_region}" | docker login --username AWS --password-stdin $(echo "${agent_container_image}" | cut -d'/' -f1)
 
 # Pull the agent image
 docker-compose pull

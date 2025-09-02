@@ -55,9 +55,9 @@ resource "aws_instance" "argus_agent" {
     create_before_destroy = true
     ignore_changes = [
       # Ignore AMI changes to prevent unnecessary replacements
-      ami,
+      ami
       # Ignore user_data changes after initial creation
-      user_data
+      # user_data
     ]
   }
 }

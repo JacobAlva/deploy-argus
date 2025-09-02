@@ -74,6 +74,7 @@ locals {
     cloudwatch_log_group     = aws_cloudwatch_log_group.argus_agent_logs.name
     aws_region               = var.aws_region
     agent_id                 = local.agent_id
+    external_id              = local.external_id
   }))
 }
 

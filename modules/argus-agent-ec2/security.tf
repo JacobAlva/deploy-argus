@@ -43,6 +43,15 @@ resource "aws_security_group" "argus_agent_sg" {
     description = "Health check endpoint - internal VPC only"
   }
   
+  # SSH access via EC2 Instance Connect
+  ingress {
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    prefix_list_ids = ["pl-03915406641cb1f53"]
+    description     = "SSH access via EC2 Instance Connect"
+  }
+
   # Conditional SSH access for debugging (not recommended for production)
   dynamic "ingress" {
     for_each = var.enable_ssh_access && length(var.allowed_cidr_blocks) > 0 ? [1] : []
