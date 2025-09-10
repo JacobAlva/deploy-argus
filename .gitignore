@@ -17,6 +17,7 @@ override.tf.json
 # Plan files  
 *.tfplan
 *.tfplan.*
+tfplan
 
 # SSH Keys
 *.pem
