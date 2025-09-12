@@ -89,19 +89,6 @@ resource "aws_iam_role" "argus_agent_role" {
         Principal = {
           Service = "ec2.amazonaws.com"
         }
-      },
-      # Allow cross-account access from Argus backend
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          AWS = "arn:aws:iam::${var.argus_provider_account_id}:root"
-        }
-        Condition = {
-          StringEquals = {
-            "sts:ExternalId" = local.external_id
-          }
-        }
       }
     ]
   })
