@@ -209,7 +209,13 @@ After deployment, you'll get these important outputs:
 
 ## Post-Deployment Verification
 
-### 1. Check Agent Health
+### 1. Confirm Docker Image
+sudo systemctl status argus-agent
+docker ps
+journalctl -u argus-agent -f
+docker-compose logs argus-agent -f
+
+### 2. Check Agent Health
 
 ```bash
 # Verify instance is running
@@ -221,7 +227,7 @@ aws ssm start-session --target $INSTANCE_ID
 # On instance: docker ps && docker logs argus-agent
 ```
 
-### 2. Verify Backend Connectivity
+### 3. Verify Backend Connectivity
 
 ```bash
 # Check agent logs for successful backend communication
@@ -232,7 +238,7 @@ aws logs get-log-events \
   --start-from-head
 ```
 
-### 3. Test S3 Access
+### 4. Test S3 Access
 
 The agent should automatically detect it's running in the same account as the target S3 buckets and use instance credentials directly (no role assumption).
 
