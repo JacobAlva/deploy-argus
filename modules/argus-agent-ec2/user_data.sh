@@ -169,14 +169,13 @@ After=docker.service
 
 [Service]
 Type=oneshot
-RemainAfterExit=true
+RemainAfterExit=yes
 WorkingDirectory=/opt/argus-agent
 ExecStart=/usr/local/bin/docker-compose up -d
 ExecStop=/usr/local/bin/docker-compose down
 ExecReload=/usr/local/bin/docker-compose restart
-TimeoutStartSec=0
-Restart=on-failure
-RestartSec=30
+TimeoutStartSec=300
+TimeoutStopSec=30
 
 [Install]
 WantedBy=multi-user.target
